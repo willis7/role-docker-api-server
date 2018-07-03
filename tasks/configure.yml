@@ -1,20 +1,13 @@
 ---
-# - name: Configure docker service
-#   template:
-#     src: templates/daemon.json.j2
-#     dest: /etc/docker/daemon.json
-#     owner: root
-#     group: root
-#     mode: 0640
+- name: Create docker unit dir
+  file:
+    path: "{{ docker['unit']['dir'] }}"
+    state: directory
 
-- name: Enable the Docker API
-    json_modify:
-        data: "{{ docker['config']['dest'] }}"
-        pointer: "/hosts"
-        action: update
-        extend:
-          - ["fd://", "tcp://{{ docker['config']['api_accept'] }}:{{ docker['config']['api_port'] }}"]
-      register: result
-
-    - debug:
-        var: result.result
+- name: Override docker unit
+  template:
+    src: templates/docker-override.conf.j2
+    dest:  "{{ docker['unit']['dir'] }}/docker-override.conf"
+    owner: root
+    group: root
+    mode: 0644

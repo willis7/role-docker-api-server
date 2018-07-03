@@ -1,8 +1,9 @@
 ---
-- name: Restart Docker service
+- name: Reload systemd configuration
+  command: systemctl daemon-reload
+  become: true
+
+- name: Restart docker
   service:
-    name:  "{{ docker['service'] }}"
-    state: started
-  when:
-    - service_wrapper.stat.exists
-    - check_has_api.stdout == ""
+    name: "{{ docker['service'] }}"
+    state: restarted

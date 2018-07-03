@@ -1,7 +1,6 @@
 ---
 docker:
-  config:
-    dest: "/etc/docker/daemon.json"
-    api-accept: "0.0.0.0"
-    api-port: "4243"
+  unit:
+    dir: "/etc/systemd/system/docker.service.d"
+    socket: "-H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
   service: "docker"

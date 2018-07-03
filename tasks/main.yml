@@ -1,6 +1,7 @@
 ---
 - name: Confirm Service Exists
-  stat: path=/etc/init.d/docker
+  stat: 
+    path: /usr/lib/systemd/system/docker.service
   register: service_wrapper
 
 - name: Stop Docker
@@ -9,7 +10,6 @@
     state: stopped
   when:
     - service_wrapper.stat.exists
-    - check_has_api.stdout == ""
   register: service_stopped
 
 - include: configure.yml
