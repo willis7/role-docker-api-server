@@ -1,0 +1,16 @@
+---
+- name: Confirm Service Exists
+  stat: path=/etc/init.d/docker
+  register: service_wrapper
+
+- name: Stop Docker
+  service:
+    name:  "{{ docker['service'] }}"
+    state: stopped
+  when:
+    - service_wrapper.stat.exists
+    - check_has_api.stdout == ""
+  register: service_stopped
+
+- include: configure.yml
+- include: service.yml

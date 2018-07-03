@@ -1,0 +1,7 @@
+---
+docker:
+  config:
+    dest: "/etc/docker/daemon.json"
+    api-accept: "0.0.0.0"
+    api-port: "4243"
+  service: "docker"
